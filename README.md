@@ -32,3 +32,5 @@ docker push $WEB_IMAGE_NAME
 WEB_IMAGE_NAME="${ACR_LOGINSERVER}/azure-vote-front:kube${BUILD_NUMBER}"
 kubectl set image deployment/azure-vote-front azure-vote-front=$WEB_IMAGE_NAME
 
+#Execute shell in build
+kubectl apply -f azure-vote-all-in-one-redis.yaml
