@@ -34,3 +34,9 @@ kubectl set image deployment/azure-vote-front azure-vote-front=$WEB_IMAGE_NAME
 
 #Execute shell in build
 kubectl apply -f azure-vote-all-in-one-redis.yaml
+#create acr registry secret
+kubectl create secret docker-registry regrec \
+    --namespace bluegreen \
+    --docker-server=aksashuacr.azurecr.io \
+    --docker-username=aksashuacr \
+    --docker-password=****************
