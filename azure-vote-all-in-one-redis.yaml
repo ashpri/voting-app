@@ -16,13 +16,16 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: azure-vote-back
-        image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
+        image: aksashuacr.azurecr.io/k8s-deployment-strategi/redis:6.0.8
+        imagePullPolicy: Always
         env:
         - name: ALLOW_EMPTY_PASSWORD
           value: "yes"
         ports:
         - containerPort: 6379
           name: redis
+      imagePullSecrets:
+      - name: regrec
 ---
 apiVersion: v1
 kind: Service
@@ -57,7 +60,8 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: azure-vote-front
-        image: mcr.microsoft.com/azuredocs/azure-vote-front:v1
+        image: aksashuacr.azurecr.io/k8s-deployment-strategi/azure-vote-front:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         resources:
@@ -68,6 +72,8 @@ spec:
         env:
         - name: REDIS
           value: "azure-vote-back"
+      imagePullSecrets:
+      - name: regrec
 ---
 apiVersion: v1
 kind: Service
