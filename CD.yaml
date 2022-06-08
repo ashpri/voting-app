@@ -1,0 +1,38 @@
+pipeline {
+     agent {
+         label 'slave'
+     }
+        environment {
+        //once you sign up for Azure container registry, use that user_id here
+        registry = "aksashuacr.azurecr.io"
+        //- update your credentials ID after creating credentials for connecting to ACR
+        registryCredential = 'acr-credential'
+        dockerImage = ''
+    }
+    stages {
+
+        stage ('checkout') {
+            steps {
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/ashpri/voting-app']]])
+            }
+        }
+
+    
+      }
+    
+   
+    stage ('K8S Deploy') {
+        steps {
+            script {
+                kubernetesDeploy(
+                    configs: 'azure-vote-all-in-one-redis.yaml',
+                    kubeconfigId: 'K8S',
+                    enableConfigSubstitution: true
+                    )           
+               
+            }
+        }
+    }
+  
+      
+}
